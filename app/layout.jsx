@@ -19,6 +19,9 @@ const DESCRIPTION =
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
+  verification: {
+  google: "c1eoo3_GTJZ68T97v82O6j9dChDdPbhfOttJKtSPwPA",
+},
   title: {
     default: TITLE,
     template: "%s · Claukk",
