@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -705,6 +705,14 @@ function FinalCta() {
 /*  FOOTER                                                             */
 /* ------------------------------------------------------------------ */
 function Footer() {
+  // Start with a literal year so the prerender succeeds.
+  // After mount, update to the real current year.
+  const [year, setYear] = useState(2026);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="footer">
       <div className="w">
@@ -727,7 +735,7 @@ function Footer() {
           </div>
         </div>
         <div className="cp">
-          <span>© {new Date().getFullYear()} Claukk. All rights reserved.</span>
+          <span>© {year} Claukk. All rights reserved.</span>
           <span>ClaukkSuite is a product family by Claukk.</span>
         </div>
       </div>
