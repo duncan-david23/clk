@@ -30,7 +30,7 @@ const SUITE_APPS = [
     ],
     screenshot: "/pos_image.png",
     screenshotAlt: "ClaukkPOS till view showing product grid and current sale",
-    href: "#",
+    href: "https://claukkpos.claukk.com/",
   },
   {
     id: "books",
@@ -168,7 +168,7 @@ function Placeholder() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  SHARED SCREENSHOT FRAME                                            */
+/*  SHARED SCREENSHOT FRAME — contain, not cover                       */
 /* ------------------------------------------------------------------ */
 function AppShot({ app, variant = "small" }) {
   const [broken, setBroken] = useState(!app.screenshot);
@@ -432,7 +432,14 @@ function Hero() {
             retail.
           </p>
           <div className="cta">
-            <a href="#suite" className="btn btn-p">Explore ClaukkSuite →</a>
+            <a
+              href={featuredApp?.href || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-p"
+            >
+              Explore ClaukkSuite →
+            </a>
             <a href="#pos" className="btn">See ClaukkPOS</a>
           </div>
         </div>
@@ -520,6 +527,8 @@ function FeaturedCard({ app }) {
     return () => ctx.revert();
   }, []);
 
+  const isExternal = app.href && app.href.startsWith("http");
+
   return (
     <div id={app.id} className="pc big">
       <div>
@@ -527,7 +536,14 @@ function FeaturedCard({ app }) {
         <h3><AppName app={app} /></h3>
         <p>{app.description}</p>
         <div className="cta">
-          <a href={app.href || "#"} className="btn btn-p">Open ClaukkPOS →</a>
+          <a
+            href={app.href || "#"}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
+            className="btn btn-p"
+          >
+            Open ClaukkPOS →
+          </a>
           <a href="#spot" className="btn btn-white">What's inside</a>
         </div>
       </div>
@@ -546,6 +562,8 @@ function FeaturedCard({ app }) {
 /*  SMALL CARD                                                         */
 /* ------------------------------------------------------------------ */
 function SuiteCard({ app }) {
+  const isExternal = app.href && app.href.startsWith("http");
+
   return (
     <div className="pc soon">
       <span className="tag">COMING SOON</span>
@@ -554,7 +572,14 @@ function SuiteCard({ app }) {
       </div>
       <h3><AppName app={app} /></h3>
       <p>{app.description}</p>
-      <a href={app.href || "#"} className="lnk">Join the waitlist →</a>
+      <a
+        href={app.href || "#"}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+        className="lnk"
+      >
+        Join the waitlist →
+      </a>
     </div>
   );
 }
@@ -639,6 +664,8 @@ function HowItWorks() {
 /* ------------------------------------------------------------------ */
 function SpotSection() {
   const features = featuredApp?.features || [];
+  const isExternal = featuredApp?.href && featuredApp.href.startsWith("http");
+
   return (
     <section id="spot" className="section">
       <div className="w fs">
@@ -648,7 +675,14 @@ function SpotSection() {
           <ul className="ft">
             {features.map((f) => <li key={f}>{f}</li>)}
           </ul>
-          <a href="#" className="btn btn-p">Open ClaukkPOS →</a>
+          <a
+            href={featuredApp?.href || "#"}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
+            className="btn btn-p"
+          >
+            Open ClaukkPOS →
+          </a>
         </Reveal>
         <Reveal>
           <p className="q">
@@ -685,6 +719,8 @@ function About() {
 /*  FINAL CTA                                                          */
 /* ------------------------------------------------------------------ */
 function FinalCta() {
+  const isExternal = featuredApp?.href && featuredApp.href.startsWith("http");
+
   return (
     <section className="section fin">
       <Reveal className="w">
@@ -694,7 +730,14 @@ function FinalCta() {
           Join the suite today and be first in line when the next tool launches.
         </p>
         <div className="cta center">
-          <a href="#" className="btn btn-p">Open ClaukkPOS →</a>
+          <a
+            href={featuredApp?.href || "#"}
+            target={isExternal ? "_blank" : undefined}
+            rel={isExternal ? "noopener noreferrer" : undefined}
+            className="btn btn-p"
+          >
+            Open ClaukkPOS →
+          </a>
         </div>
       </Reveal>
     </section>
@@ -705,8 +748,6 @@ function FinalCta() {
 /*  FOOTER                                                             */
 /* ------------------------------------------------------------------ */
 function Footer() {
-  // Start with a literal year so the prerender succeeds.
-  // After mount, update to the real current year.
   const [year, setYear] = useState(2026);
 
   useEffect(() => {
@@ -837,16 +878,24 @@ export default function Home() {
         .mini{background:var(--white);border-radius:12px;border:1px solid rgba(243,245,242,.14);overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.45);transform:perspective(1200px) rotateY(-9deg) rotateX(3deg);transition:.5s}
         .pc.big:hover .mini{transform:perspective(1200px) rotateY(-3deg) rotateX(1deg)}
 
-        .shot{display:flex;flex-direction:column;background:var(--panel)}
-        .shot img{display:block;width:100%;height:auto;object-fit:cover;object-position:top center}
+        /* Screenshot container now uses CONTAIN so nothing is cut off */
+        .shot{display:flex;flex-direction:column;background:var(--panel);width:100%;height:100%}
+        .shot img{
+          display:block;
+          width:100%;
+          height:100%;
+          object-fit:contain;
+          object-position:center;
+          background:var(--panel);
+        }
 
-        .shot.large{height:100%}
+        .shot.large{height:100%;min-height:320px}
         .shot.large img{height:100%;min-height:320px}
 
-        .thumb{width:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:var(--bg);margin-bottom:4px;border:1px solid var(--lk)}
-        .thumb .shot{border:none;height:100%;background:transparent}
+        .thumb{width:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:var(--panel);margin-bottom:4px;border:1px solid var(--lk)}
+        .thumb .shot{border:none;height:100%;background:var(--panel)}
         .thumb .shot .mt{display:none}
-        .thumb .shot img{height:100%;width:100%;object-fit:cover;object-position:top center}
+        .thumb .shot img{height:100%;width:100%;object-fit:contain;object-position:center;background:var(--panel)}
 
         /* ---- blank placeholder ---- */
         .placeholder{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:220px;background:var(--gr);color:rgba(243,245,242,.28)}
