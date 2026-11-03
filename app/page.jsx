@@ -30,7 +30,7 @@ const SUITE_APPS = [
     ],
     screenshot: "/pos_image.png",
     screenshotAlt: "ClaukkPOS till view showing product grid and current sale",
-    href: "https://claukkpos.claukk.com/",
+    href: "https://pos.claukk.com/",
   },
   {
     id: "books",
